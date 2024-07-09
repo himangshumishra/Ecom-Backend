@@ -43,7 +43,6 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// Fetch featured products
 exports.getFeaturedProducts = async (req, res) => {
   try {
     const products = await Product.find({ featured: true });
@@ -53,20 +52,26 @@ exports.getFeaturedProducts = async (req, res) => {
   }
 };
 
-// Fetch products with price less than a certain value
 exports.getProductsByPrice = async (req, res) => {
   try {
-    const products = await Product.find({ price: { $lt: req.params.price } });
+    const price = parseFloat(req.params.price);
+    if (isNaN(price)) {
+      return res.status(400).json({ error: 'Invalid price value' });
+    }
+    const products = await Product.find({ price: { $lt: price } });
     res.json(products);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Fetch products with rating higher than a certain value
 exports.getProductsByRating = async (req, res) => {
   try {
-    const products = await Product.find({ rating: { $gt: req.params.rating } });
+    const rating = parseFloat(req.params.rating);
+    if (isNaN(rating)) {
+      return res.status(400).json({ error: 'Invalid rating value' });
+    }
+    const products = await Product.find({ rating: { $gt: rating } });
     res.json(products);
   } catch (error) {
     res.status(500).json({ error: error.message });

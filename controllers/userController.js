@@ -13,7 +13,8 @@ exports.registerUser = async (req, res) => {
     const payload = { user: { id: user.id, mailid: user.email, name: user.name } };
     const token = jwt.sign(payload, 'Mishra@@1234', { expiresIn: '1h' });
 
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'Strict' });
+    res.cookie('token', token, { httpOnly: true, sameSite: 'Lax', path: '/' });
+
     res.status(201).json({ message: "User registered successfully" });
 
   } catch (error) {
@@ -35,7 +36,8 @@ exports.loginUser = async (req, res) => {
     const payload = { user: { id: user.id, mailid: user.email, name: user.name } };
     const token = jwt.sign(payload, 'Mishra@@1234', { expiresIn: '1h' });
 
-    res.cookie('token', token, { httpOnly: true, secure: true });
+    res.cookie('token', token, { httpOnly: true, sameSite: 'Lax', path: '/' });
+
     res.status(200).json({ message: "Logged in successfully" });
   
   } catch (error) {
